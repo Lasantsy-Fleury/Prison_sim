@@ -42,7 +42,7 @@ pipeline {
         stage('Quality Gate') {
             steps {
                 script {
-                    timeout(time: 2, unit: 'MINUTES') {
+                    timeout(time: 5, unit: 'MINUTES') {
                         def qg = waitForQualityGate()
                         if (qg.status != 'OK') {
                             error " Quality Gate failed: ${qg.status}"
@@ -54,16 +54,22 @@ pipeline {
 
         stage('Build Backend Image') {
             steps {
+                echo ' Construction de l\'image backend...'
                 script {
-                    docker.build("backend:${IMAGE_TAG}", "./backend")
+                    dir('backend') {
+                        docker.build("backend:${env.BUILD_ID}")
+                    }
                 }
             }
         }
 
         stage('Build Frontend Image') {
             steps {
+                echo ' Construction de l\'image frontend...'
                 script {
-                    docker.build("frontend:${IMAGE_TAG}", "./frontend")
+                    dir('frontend') {
+                        docker.build("frontend:${env.BUILD_ID}")
+                    }
                 }
             }
         }
