@@ -26,10 +26,12 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     sh '''
+                    TIMESTAMP=$(date +%s)
                     sonar-scanner \
-                        -Dsonar.projectKey=mon-projet \
+                        -Dsonar.projectKey=mon-projet-${TIMESTAMP} \
+                        -Dsonar.projectName="Mon Projet ${TIMESTAMP}" \
                         -Dsonar.sources=. \
-                        -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/build/** \
+                        -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/coverage/** \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
                         -Dsonar.login=${SONAR_TOKEN}
                     '''
