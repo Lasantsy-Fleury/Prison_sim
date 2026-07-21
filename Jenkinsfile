@@ -18,7 +18,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/LASANTSY/ton-projet.git'
+                git branch: 'main', url: 'https://github.com/Lasantsy-Fleury/Prison_sim.git'
             }
         }
 
@@ -43,7 +43,7 @@ pipeline {
                     timeout(time: 2, unit: 'MINUTES') {
                         def qg = waitForQualityGate()
                         if (qg.status != 'OK') {
-                            error "❌ Quality Gate failed: ${qg.status}"
+                            error " Quality Gate failed: ${qg.status}"
                         }
                     }
                 }
